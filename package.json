@@ -1,0 +1,17 @@
+{
+  "name": "zayne-range-pond-invite",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Animated RSVP birthday invitation for Zayne's 13th birthday at Range Pond.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check script.js"
+  },
+  "keywords": [
+    "birthday",
+    "invitation",
+    "rsvp",
+    "static-site"
+  ],
+  "license": "UNLICENSED"
+}

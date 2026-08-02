@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zayne's 13th Birthday · Range Pond</title>
+  <meta name="description" content="Animated digital invitation for Zayne's 13th birthday at Range Pond in Poland, Maine." />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+  <main class="page-shell">
+    <section class="hero panel" data-panel="0">
+      <div class="hero-copy">
+        <p class="eyebrow">Range Pond · Poland, Maine</p>
+        <h1>Zayne is turning <span>13</span></h1>
+        <p class="lede">Running, sports, minute-to-win-it games, beach time, burgers, hot dogs, and a summer sendoff with friends.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#rsvp">RSVP now</a>
+          <a class="button ghost" href="#details">Party details</a>
+        </div>
+      </div>
+      <div class="score-card" aria-label="Party quick facts">
+        <div><strong>Aug 15</strong><small>Saturday</small></div>
+        <div><strong>After 12</strong><small>Ends 3–4 weather depending</small></div>
+        <div><strong>Beach + Games</strong><small>Bring sneakers + swimsuit</small></div>
+      </div>
+    </section>
+
+    <section class="cube-stage" aria-label="Animated invitation cube">
+      <div class="sticky-wrap">
+        <div class="scene">
+          <div class="cube" id="party-cube" aria-hidden="true">
+            <article class="face face-front">
+              <span class="badge">Run</span>
+              <h2>Birthday sprint</h2>
+              <p>Lace up for races, relays, and quick challenges.</p>
+            </article>
+            <article class="face face-right">
+              <span class="badge">Sports</span>
+              <h2>Game mode</h2>
+              <p>Beach games, sports challenges, and friend-team chaos.</p>
+            </article>
+            <article class="face face-back">
+              <span class="badge">Minute</span>
+              <h2>Win it</h2>
+              <p>Fast little challenges. Big bragging rights. Zero boring.</p>
+            </article>
+            <article class="face face-left">
+              <span class="badge">Beach</span>
+              <h2>Range Pond</h2>
+              <p>Swim, chill, eat, compete, repeat.</p>
+            </article>
+            <article class="face face-top">
+              <span class="badge">Food</span>
+              <h2>Covered for kids</h2>
+              <p>Burgers, hot dogs, and party food provided.</p>
+            </article>
+            <article class="face face-bottom">
+              <span class="badge">RSVP</span>
+              <h2>By Aug 12</h2>
+              <p>Tap yes/no so we know who's joining the squad.</p>
+            </article>
+          </div>
+        </div>
+        <div class="scroll-hint">Scroll to rotate the invite cube ↓</div>
+      </div>
+    </section>
+
+    <section id="details" class="details-grid panel" data-panel="1">
+      <article class="detail-card big">
+        <p class="eyebrow">You're invited</p>
+        <h2>Zayne's 13th Birthday Party</h2>
+        <p>Meet at Range Pond in Poland, Maine on <strong>August 15</strong>. Come anytime after <strong>12:00 PM</strong>. We'll wrap around <strong>3–4 PM</strong>, depending on weather.</p>
+      </article>
+      <article class="detail-card">
+        <h3>Bring</h3>
+        <ul>
+          <li>Swimsuit</li>
+          <li>Towel</li>
+          <li>Sneakers</li>
+          <li>Beach energy</li>
+        </ul>
+      </article>
+      <article class="detail-card">
+        <h3>Food</h3>
+        <p>Burgers, hot dogs, and food will be provided for the kids.</p>
+      </article>
+      <article class="detail-card">
+        <h3>Parents</h3>
+        <p>Parents are welcome. Kids are covered; parents will need to pay for themselves.</p>
+      </article>
+      <article class="detail-card">
+        <h3>RSVP</h3>
+        <p>Please RSVP by <strong>August 12</strong>.</p>
+      </article>
+    </section>
+
+    <section class="unfold-section panel" data-panel="2">
+      <div class="unfold-card" id="unfold-card">
+        <div class="flap flap-left"><span>🏃</span><strong>Race</strong></div>
+        <div class="flap flap-center">
+          <p class="eyebrow">Birthday mission</p>
+          <h2>Help Zayne kick off 13</h2>
+          <p>Show up ready to run, play, swim, and destroy at minute-to-win-it games.</p>
+        </div>
+        <div class="flap flap-right"><span>🌊</span><strong>Beach</strong></div>
+      </div>
+    </section>
+
+    <section id="rsvp" class="rsvp-section panel" data-panel="3">
+      <div class="rsvp-copy">
+        <p class="eyebrow">RSVP board</p>
+        <h2>Who's coming?</h2>
+        <p>The count refreshes on this invite when a backend is connected. In local/demo mode, this page keeps a live count on the device.</p>
+        <div class="live-count" aria-live="polite">
+          <span id="going-count">0</span>
+          <small>people marked going</small>
+        </div>
+      </div>
+
+      <form class="rsvp-form" id="rsvp-form">
+        <label>
+          Friend / parent name
+          <input id="guest-name" name="name" placeholder="Name" required maxlength="80" />
+        </label>
+        <label>
+          How many kids/guests?
+          <input id="guest-count" name="count" type="number" min="1" max="8" value="1" required />
+        </label>
+        <fieldset>
+          <legend>Can you make it?</legend>
+          <label class="choice"><input type="radio" name="status" value="going" checked /> Going</label>
+          <label class="choice"><input type="radio" name="status" value="not-going" /> Can't make it</label>
+        </fieldset>
+        <label>
+          Optional note
+          <textarea id="guest-note" name="note" placeholder="Allergies, parent staying, questions..."></textarea>
+        </label>
+        <button class="button primary full" type="submit">Send RSVP</button>
+        <p class="form-status" id="form-status" role="status"></p>
+        <div class="manual-links">
+          <a id="parent-sms" href="#">Text RSVP number</a>
+          <a id="zayne-sms" href="#">Text Zayne</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
