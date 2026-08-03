@@ -32,7 +32,7 @@ npm start
 Or without npm:
 
 ```bash
-node server.js
+node local-server.js
 ```
 
 ## Verify syntax
@@ -45,11 +45,11 @@ npm run check
 
 This invite deploys to Vercel as a static site. `npm run build` copies the browser files into `dist/`, and `vercel.json` tells Vercel to serve that folder.
 
-Important RSVP detail: static hosting cannot save shared RSVPs by itself. On Vercel static output, the form falls back to browser-local demo storage and SMS links. For the live shared count and real saved RSVPs, host `server.js` somewhere that can run Node, or wire the form to Vercel serverless/Supabase/Twilio/Telnyx/CAK3D SMS gateway after approval.
+Important RSVP detail: static hosting cannot save shared RSVPs by itself. On Vercel static output, the form falls back to browser-local demo storage and SMS links. For the live shared count and real saved RSVPs, host `local-server.js` somewhere that can run Node, or wire the form to Vercel serverless/Supabase/Twilio/Telnyx/CAK3D SMS gateway after approval.
 
 ## RSVP behavior
 
-- With `node server.js`, the page posts RSVPs to `/api/rsvp`.
+- With `node local-server.js`, the page posts RSVPs to `/api/rsvp`.
 - RSVP data is stored in local `rsvps.json`, which is intentionally gitignored.
 - The visible going count refreshes every 15 seconds.
 - If no backend is available, the page falls back to browser `localStorage` and provides SMS links.
