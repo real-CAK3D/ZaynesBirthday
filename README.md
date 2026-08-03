@@ -41,11 +41,11 @@ node server.js
 npm run check
 ```
 
-## GitHub Pages note
+## Static hosting note
 
-This invite can be pushed to a GitHub repo as a static site because `index.html`, `styles.css`, and `script.js` work by themselves.
+This invite deploys to Vercel as a static site. `npm run build` copies the browser files into `dist/`, and `vercel.json` tells Vercel to serve that folder.
 
-Important RSVP detail: GitHub Pages is static, so it cannot save shared RSVPs by itself. On GitHub Pages, the form will fall back to browser-local demo storage and SMS links. For the live shared count and real saved RSVPs, host `server.js` somewhere that can run Node, or wire the form to Vercel/Supabase/Twilio/Telnyx/CAK3D SMS gateway after approval.
+Important RSVP detail: static hosting cannot save shared RSVPs by itself. On Vercel static output, the form falls back to browser-local demo storage and SMS links. For the live shared count and real saved RSVPs, host `server.js` somewhere that can run Node, or wire the form to Vercel serverless/Supabase/Twilio/Telnyx/CAK3D SMS gateway after approval.
 
 ## RSVP behavior
 

@@ -5,7 +5,8 @@
   "description": "Animated RSVP birthday invitation for Zayne's 13th birthday at Range Pond.",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check script.js"
+    "build": "node scripts/build-vercel.mjs",
+    "check": "node --check server.js && node --check script.js && node --check scripts/build-vercel.mjs"
   },
   "keywords": [
     "birthday",
