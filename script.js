@@ -129,8 +129,8 @@ function cubeAngles(progress) {
     [0.31, 0, 180],
     [0.46, 0, 270],
     [0.61, -90, 270],
-    [0.76, 90, 270],
-    [1.00, 0, 360],
+    [0.76, 90, 360],
+    [1.00, 90, 360],
   ];
   for (let i = 0; i < stops.length - 1; i++) {
     const [aP, aX, aY] = stops[i];
