@@ -14,7 +14,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Range Pond · Poland, Maine</p>
         <h1>Zayne is turning <span>13</span></h1>
-        <p class="lede">Running, sports, minute-to-win-it games, beach time, burgers, hot dogs, and a summer sendoff with friends.</p>
+        <p class="lede">Running, sports, minute-to-win-it games, beach time, burgers, hot dogs, cake, and a summer sendoff with friends.</p>
         <div class="hero-actions">
           <a class="button primary" href="#rsvp">RSVP now</a>
           <a class="button ghost" href="#details">Party details</a>
@@ -52,18 +52,18 @@
               <p>Swim, chill, eat, compete, repeat.</p>
             </article>
             <article class="face face-top">
-              <span class="badge">Food</span>
-              <h2>Covered for kids</h2>
-              <p>Burgers, hot dogs, and party food provided.</p>
+              <span class="badge">Cake</span>
+              <h2>Cake break</h2>
+              <p>Fuel up, sing loud, and grab a birthday slice.</p>
             </article>
             <article class="face face-bottom">
               <span class="badge">RSVP</span>
               <h2>By Aug 12</h2>
-              <p>Tap yes/no so we know who's joining the squad.</p>
+              <p>Have your parent RSVP Zaynes Dad so the board knows who is going.</p>
             </article>
           </div>
         </div>
-        <div class="scroll-hint">Scroll to rotate the invite cube ↓</div>
+        <div class="scroll-hint">Scroll slowly — the invite cube gets more time to spin ↓</div>
       </div>
     </section>
 
@@ -84,15 +84,15 @@
       </article>
       <article class="detail-card">
         <h3>Food</h3>
-        <p>Burgers, hot dogs, and food will be provided for the kids.</p>
+        <p>Burgers, hot dogs, cake, and party food will be provided for the kids.</p>
       </article>
       <article class="detail-card">
         <h3>Parents</h3>
-        <p>Parents are welcome. Kids are covered; parents will need to pay for themselves.</p>
+        <p>Parents are welcome. Kids are covered; parents will need to pay for themselves. Please have your parent RSVP Zaynes Dad.</p>
       </article>
       <article class="detail-card">
         <h3>RSVP</h3>
-        <p>Please RSVP by <strong>August 12</strong>.</p>
+        <p>Please RSVP by <strong>August 12</strong>: RSVP Zaynes Dad or Text Zayne yourself.</p>
       </article>
     </section>
 
@@ -102,9 +102,13 @@
         <div class="flap flap-center">
           <p class="eyebrow">Birthday mission</p>
           <h2>Help Zayne kick off 13</h2>
-          <p>Show up ready to run, play, swim, and destroy at minute-to-win-it games.</p>
+          <p>Show up ready to run, play, swim, eat cake, and destroy at minute-to-win-it games.</p>
         </div>
+        <div class="flap flap-cake"><span>🎂</span><strong>Cake</strong></div>
         <div class="flap flap-right"><span>🌊</span><strong>Beach</strong></div>
+      </div>
+      <div class="party-burst" id="party-burst" aria-hidden="true">
+        <span>🎉</span><span>🎊</span><span>✨</span><span>🎈</span><span>〰️</span>
       </div>
     </section>
 
@@ -112,37 +116,33 @@
       <div class="rsvp-copy">
         <p class="eyebrow">RSVP board</p>
         <h2>Who's coming?</h2>
-        <p>The count refreshes on this invite when a backend is connected. In local/demo mode, this page keeps a live count on the device.</p>
+        <p>Type your name and choose if you are going. It saves to the board so the next person can see who is going, and this device will not submit twice.</p>
         <div class="live-count" aria-live="polite">
           <span id="going-count">0</span>
-          <small>people marked going</small>
+          <small id="going-label">people are going</small>
         </div>
+        <ul class="rsvp-list" id="rsvp-list" aria-live="polite">
+          <li>No RSVPs yet — be the first on the board.</li>
+        </ul>
       </div>
 
       <form class="rsvp-form" id="rsvp-form">
         <label>
-          Friend / parent name
-          <input id="guest-name" name="name" placeholder="Name" required maxlength="80" />
-        </label>
-        <label>
-          How many kids/guests?
-          <input id="guest-count" name="count" type="number" min="1" max="8" value="1" required />
+          Your name
+          <input id="guest-name" name="name" placeholder="Type your name" required maxlength="80" autocomplete="name" />
         </label>
         <fieldset>
-          <legend>Can you make it?</legend>
+          <legend>Are you going?</legend>
           <label class="choice"><input type="radio" name="status" value="going" checked /> Going</label>
           <label class="choice"><input type="radio" name="status" value="not-going" /> Can't make it</label>
         </fieldset>
-        <label>
-          Optional note
-          <textarea id="guest-note" name="note" placeholder="Allergies, parent staying, questions..."></textarea>
-        </label>
-        <button class="button primary full" type="submit">Send RSVP</button>
+        <button class="button primary full" type="submit">Save RSVP</button>
         <p class="form-status" id="form-status" role="status"></p>
         <div class="manual-links">
-          <a id="parent-sms" href="#">Text RSVP number</a>
-          <a id="zayne-sms" href="#">Text Zayne</a>
+          <a id="parent-sms" href="#">RSVP Zaynes Dad</a>
+          <a id="zayne-sms" href="#">or Text Zayne yourself</a>
         </div>
+        <p class="sms-help">Please have your parent RSVP Zaynes Dad.</p>
       </form>
     </section>
   </main>

@@ -18,9 +18,13 @@ function writeRsvps(list) {
   fs.writeFileSync(dataPath, JSON.stringify(list, null, 2));
 }
 
+function publicList(list) {
+  return list.map(({ name, status, at }) => ({ name, status, at }));
+}
+
 function summary(list) {
-  const goingCount = list.filter(r => r.status === 'going').reduce((sum, r) => sum + Number(r.count || 1), 0);
-  return { goingCount, totalResponses: list.length };
+  const goingCount = list.filter(r => r.status === 'going').length;
+  return { goingCount, totalResponses: list.length, rsvps: publicList(list) };
 }
 
 function sendJson(res, status, body) {
@@ -28,8 +32,8 @@ function sendJson(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
-function sanitize(input) {
-  return String(input || '').replace(/[<>]/g, '').trim().slice(0, 300);
+function sanitize(input, max = 300) {
+  return String(input || '').replace(/[<>]/g, '').trim().slice(0, max);
 }
 
 async function readBody(req) {
@@ -56,7 +60,7 @@ async function maybeNotifyPhones(rsvp, totals) {
   // Live automatic SMS needs an approved provider such as Twilio, Telnyx,
   // or CAK3D's existing SMS gateway. This local server intentionally does
   // not send texts by itself; it logs the notification payload shape only.
-  const line = `[RSVP notify pending SMS provider] parent=${parentPhone} zayne=${zaynePhone} name=${rsvp.name} status=${rsvp.status} count=${rsvp.count} goingTotal=${totals.goingCount}`;
+  const line = `[RSVP notify pending SMS provider] parent=${parentPhone} zayne=${zaynePhone} name=${rsvp.name} status=${rsvp.status} goingTotal=${totals.goingCount}`;
   console.log(line);
 }
 
@@ -69,21 +73,25 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/api/rsvp' && req.method === 'POST') {
       const raw = await readBody(req);
       const body = JSON.parse(raw || '{}');
+      const clientId = sanitize(body.clientId, 120);
       const rsvp = {
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
-        name: sanitize(body.name),
-        count: Math.max(1, Math.min(8, Number(body.count || 1))),
+        clientId,
+        name: sanitize(body.name, 80),
         status: body.status === 'not-going' ? 'not-going' : 'going',
-        note: sanitize(body.note),
         at: new Date().toISOString(),
       };
       if (!rsvp.name) return sendJson(res, 400, { ok: false, error: 'name required' });
+      if (!rsvp.clientId) return sendJson(res, 400, { ok: false, error: 'client id required' });
       const list = readRsvps();
+      if (list.some(item => item.clientId === rsvp.clientId)) {
+        return sendJson(res, 409, { ok: false, error: 'duplicate RSVP blocked for this device', ...summary(list) });
+      }
       list.push(rsvp);
       writeRsvps(list);
       const totals = summary(list);
       await maybeNotifyPhones(rsvp, totals);
-      return sendJson(res, 200, { ok: true, ...totals, rsvp });
+      return sendJson(res, 200, { ok: true, ...totals, rsvp: { name: rsvp.name, status: rsvp.status, at: rsvp.at } });
     }
 
     let filePath = path.normalize(path.join(root, url.pathname === '/' ? 'index.html' : url.pathname));

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node local-server.js",
     "build": "node scripts/build-vercel.mjs",
-    "check": "node --check local-server.js && node --check script.js && node --check scripts/build-vercel.mjs"
+    "check": "node --check local-server.js && node --check script.js && node --check scripts/build-vercel.mjs && node --check api/rsvp.js"
   },
   "keywords": [
     "birthday",
