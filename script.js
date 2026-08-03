@@ -4,6 +4,7 @@ const API = '/api/rsvp';
 const LOCAL_KEY = 'zayne-range-pond-rsvps';
 const SUBMITTED_KEY = 'zayne-range-pond-rsvp-submitted';
 
+const cubeStage = document.querySelector('.cube-stage');
 const cube = document.getElementById('party-cube');
 const unfold = document.getElementById('unfold-card');
 const partyBurst = document.getElementById('party-burst');
@@ -12,7 +13,7 @@ const goingLabel = document.getElementById('going-label');
 const listEl = document.getElementById('rsvp-list');
 const form = document.getElementById('rsvp-form');
 const statusEl = document.getElementById('form-status');
-const parentSms = document.getElementById('parent-sms');
+const parentNumber = document.getElementById('parent-number');
 const zayneSms = document.getElementById('zayne-sms');
 const canvas = document.getElementById('confetti-canvas');
 const ctx = canvas.getContext('2d');
@@ -29,7 +30,9 @@ function setSmsLinks(payload = {}) {
   const name = normalizeName(payload.name) || 'Friend';
   const status = payload.status === 'not-going' ? "can't make it" : 'is going';
   const message = encodeURIComponent(`Zayne birthday RSVP: ${name} ${status}. Please have your parent RSVP Zaynes Dad.`);
-  parentSms.href = `sms:${RSVP_PARENT}?&body=${message}`;
+  const formattedParent = RSVP_PARENT.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+  const strong = parentNumber?.querySelector('strong');
+  if (strong) strong.textContent = formattedParent;
   zayneSms.href = `sms:${RSVP_ZAYNE}?&body=${message}`;
 }
 
@@ -115,28 +118,54 @@ async function submitRsvp(payload) {
   }
 }
 
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+function cubeAngles(progress) {
+  const stops = [
+    [0.00, 0, 0],
+    [0.16, 0, 90],
+    [0.31, 0, 180],
+    [0.46, 0, 270],
+    [0.61, -90, 270],
+    [0.76, 90, 270],
+    [1.00, 0, 360],
+  ];
+  for (let i = 0; i < stops.length - 1; i++) {
+    const [aP, aX, aY] = stops[i];
+    const [bP, bX, bY] = stops[i + 1];
+    if (progress <= bP) {
+      const local = easeInOut(Math.max(0, Math.min(1, (progress - aP) / (bP - aP))));
+      return { x: aX + (bX - aX) * local, y: aY + (bY - aY) * local };
+    }
+  }
+  return { x: 0, y: 360 };
+}
+
 function updateScrollMotion() {
-  const max = document.documentElement.scrollHeight - innerHeight;
-  const p = max ? scrollY / max : 0;
-  const cubeSpin = p * 420;
-  const cubeTilt = Math.sin(p * Math.PI * 2) * 18;
-  const cubeRoll = Math.cos(p * Math.PI * 1.5) * 10;
-  cube.style.transform = `rotateX(${cubeTilt - cubeSpin * 0.14}deg) rotateY(${cubeSpin}deg) rotateZ(${cubeRoll}deg)`;
+  const cubeRect = cubeStage.getBoundingClientRect();
+  const cubeTravel = Math.max(1, cubeStage.offsetHeight - innerHeight);
+  const cubeProgress = Math.max(0, Math.min(1, -cubeRect.top / cubeTravel));
+  const { x, y } = cubeAngles(cubeProgress);
+  const cubeRoll = Math.sin(cubeProgress * Math.PI * 2) * 5;
+  cube.style.transform = `rotateX(${x}deg) rotateY(${y}deg) rotateZ(${cubeRoll}deg)`;
 
   const rect = unfold.getBoundingClientRect();
-  const visibleRaw = (innerHeight - rect.top) / (innerHeight * 0.95);
-  const visible = Math.min(1, Math.max(0, (visibleRaw - 0.32) / 0.68));
+  const visibleRaw = (innerHeight - rect.top) / (innerHeight * 1.08);
+  const visible = Math.min(1, Math.max(0, (visibleRaw - 0.48) / 0.78));
+  const cakeVisible = Math.min(1, Math.max(0, (visibleRaw - 0.74) / 0.55));
   const left = unfold.querySelector('.flap-left');
   const right = unfold.querySelector('.flap-right');
   const cake = unfold.querySelector('.flap-cake');
   if (left && right && cake) {
     left.style.transform = `rotateY(${-108 * visible}deg)`;
     right.style.transform = `rotateY(${108 * visible}deg)`;
-    cake.style.transform = `translateY(${-24 * visible}px) rotateX(${74 * visible}deg)`;
+    cake.style.transform = `translateY(${-14 * cakeVisible}px) rotateX(${42 * cakeVisible}deg)`;
   }
 
   const burstPoint = document.getElementById('rsvp').getBoundingClientRect().top;
-  if (!partyBurstShown && burstPoint < innerHeight * 0.95) {
+  if (!partyBurstShown && burstPoint < innerHeight * 0.88) {
     partyBurstShown = true;
     partyBurst?.classList.add('burst-on');
     burstConfetti(150, innerHeight * 0.35);
